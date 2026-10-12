@@ -1,0 +1,76 @@
+[project]
+name = "safeconvert-backend"
+version = "1.0.0"
+description = "Privacy-first file conversion API (PDF, images, SVG, DOCX)"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi==0.142.2",
+    "uvicorn[standard]==0.54.0",
+    "python-multipart==0.0.32",
+    "pydantic==2.13.5",
+    "pydantic-settings==2.15.0",
+    # PDF rendering. Permissive licence (BSD-3/Apache-2) — deliberately NOT
+    # PyMuPDF, which is AGPL-3.0 and would infect this service.
+    "pypdfium2==5.14.0",
+    "pillow==12.3.0",
+    "reportlab==5.0.1",
+    "python-docx==1.2.0",
+    "resvg-py==0.5.0",
+    "defusedxml==0.7.1",
+    "annotated-doc==0.0.5",
+    "annotated-types==0.8.0",
+    "anyio==4.15.1",
+    "charset-normalizer==3.5.1",
+    "click==8.5.0",
+    "h11==0.16.0",
+    "idna==3.20",
+    "opentelemetry-api==1.45.0",
+    "pydantic-core==2.46.5",
+    "python-dotenv==1.2.4",
+    "starlette==1.7.0",
+    "typing-extensions==4.16.0",
+    "typing-inspection==0.4.4",
+    "lxml==6.1.3",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "httpx>=0.27",
+    "ruff>=0.6",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["app"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --strict-markers"
+filterwarnings = [
+    "ignore::DeprecationWarning:starlette.*",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "SIM", "S", "C4", "PERF"]
+ignore = [
+    "E501",    # line length is handled by the formatter, not the linter
+    "B008",    # FastAPI's Depends()/File()/Query() are calls in defaults by design
+    "SIM108",  # ternary is not always clearer than an if/else
+    "PERF203", # try/except in a loop is the correct shape for per-item failure
+]
+
+[tool.ruff.lint.per-file-ignores]
+# Tests legitimately use assert, build magic-byte fixtures, and shadow names.
+"tests/*" = ["S101", "S106", "S108", "B011", "E402", "N802"]
+
+[tool.ruff.lint.flake8-bandit]
+# Subprocess is not used anywhere in app/. Test helpers use it for fault
+# injection only, in scripts outside the package.

@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!--
+      The CSP for the deployed app is set as an HTTP header by nginx, not here.
+      A meta CSP cannot use frame-ancestors or report-uri reliably, and it does
+      not protect the initial document load, so the header is the right place.
+
+      This meta tag is a defence-in-depth floor for local preview only, and it
+      has to permit an inline <style> for Vite's dev server, which injects the
+      stylesheet as a JS-managed style tag. With a strict `style-src 'self'`
+      and no 'unsafe-inline', the tag is blocked: document.styleSheets is
+      empty and the page renders completely unstyled while the CSS is
+      visibly present in the DOM. That is why the production CSP lives in
+      nginx.conf, where the built CSS is a real <link> from 'self' and needs
+      no inline allowance at all.
+    -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; script-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'"
+    />
+    <meta name="referrer" content="no-referrer" />
+    <meta
+      name="description"
+      content="Convert PDF, images, SVG and DOCX files in your browser-adjacent privacy. Files are processed in memory and never stored."
+    />
+    <title>SafeConvert — private file conversion</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>
+      <div style="padding: 2rem; font-family: system-ui, sans-serif">
+        <h1>JavaScript is required</h1>
+        <p>
+          This tool converts files on your behalf in your browser session, which needs JavaScript
+          enabled. Nothing is uploaded until you choose a file and press convert.
+        </p>
+      </div>
+    </noscript>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

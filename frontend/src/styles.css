@@ -1,0 +1,672 @@
+/*
+ * SafeConvert styles.
+ *
+ * Two deliberate constraints:
+ * - No external fonts, no CDN, no analytics. A privacy tool that loads
+ *   resources from third parties contradicts its own pitch, and every
+ *   external origin is one more thing that can observe the visitor.
+ * - Colours meet WCAG AA contrast (4.5:1) for body text on their background.
+ */
+
+:root {
+  color-scheme: light dark;
+
+  --bg: #f7f8fa;
+  --surface: #ffffff;
+  --surface-2: #eef1f5;
+  --text: #14181f;
+  --text-muted: #5b6472;
+  --border: #d7dce3;
+  --border-strong: #b9c1cc;
+
+  --accent: #1f4e79;
+  --accent-hover: #17395a;
+  --accent-soft: #e8eef5;
+
+  --ok-bg: #e7f6ec;
+  --ok-text: #1c5c34;
+  --ok-border: #a8d9bb;
+
+  --warn-bg: #fdf3e0;
+  --warn-text: #7a5312;
+  --warn-border: #e9cf9b;
+
+  --err-bg: #fdecec;
+  --err-text: #8c2020;
+  --err-border: #f0b4b4;
+
+  --info-bg: #eaf1f8;
+  --info-text: #1f4e79;
+  --info-border: #b9cee4;
+
+  --radius: 10px;
+  --radius-sm: 6px;
+  --shadow: 0 1px 2px rgb(20 24 31 / 6%), 0 4px 12px rgb(20 24 31 / 4%);
+  --font: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    sans-serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e1116;
+    --surface: #161b22;
+    --surface-2: #1d242e;
+    --text: #e8edf3;
+    --text-muted: #9aa6b5;
+    --border: #2a323d;
+    --border-strong: #3c4653;
+
+    --accent: #7aa8d8;
+    --accent-hover: #9cc0e6;
+    --accent-soft: #1b2735;
+
+    --ok-bg: #12291c;
+    --ok-text: #86d6a4;
+    --ok-border: #245239;
+
+    --warn-bg: #2c2313;
+    --warn-text: #e3c07a;
+    --warn-border: #574323;
+
+    --err-bg: #2d1618;
+    --err-text: #f0a0a0;
+    --err-border: #5c2b2b;
+
+    --info-bg: #16212e;
+    --info-text: #9cc0e6;
+    --info-border: #2c4260;
+
+    --shadow: 0 1px 2px rgb(0 0 0 / 40%), 0 4px 12px rgb(0 0 0 / 30%);
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.55;
+  /* Never let a long filename or URL widen the page. */
+  overflow-wrap: break-word;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.wrap {
+  width: 100%;
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+/* ------------------------------------------------------------------ header */
+.site-header {
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  padding: 1.25rem 0;
+  margin-bottom: 2rem;
+}
+
+.site-header .wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.brand-mark {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-sm);
+  background: var(--accent);
+  color: #fff;
+  font-size: 1.35rem;
+  flex: none;
+}
+
+.brand h1 {
+  margin: 0;
+  font-size: 1.3rem;
+  letter-spacing: -0.01em;
+}
+
+.brand-tag {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  flex: none;
+}
+
+.status-ok {
+  color: var(--ok-text);
+  background: var(--ok-bg);
+  border-color: var(--ok-border);
+}
+.status-ok .status-dot {
+  background: var(--ok-text);
+}
+
+.status-down {
+  color: var(--err-text);
+  background: var(--err-bg);
+  border-color: var(--err-border);
+}
+.status-down .status-dot {
+  background: var(--err-text);
+}
+
+/* ------------------------------------------------------------------- intro */
+.intro h2 {
+  margin: 0 0 0.6rem;
+  font-size: 1.6rem;
+  letter-spacing: -0.015em;
+}
+
+.intro p {
+  margin: 0 0 1rem;
+  color: var(--text-muted);
+  max-width: 68ch;
+}
+
+.promises {
+  display: grid;
+  gap: 0.6rem;
+  margin: 1.25rem 0 2rem;
+  padding: 1rem 1.1rem;
+  list-style: none;
+  background: var(--accent-soft);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.promises li {
+  position: relative;
+  padding-left: 1.3rem;
+  font-size: 0.92rem;
+  color: var(--text-muted);
+}
+
+.promises li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.promises strong {
+  color: var(--text);
+}
+
+/* -------------------------------------------------------------------- tabs */
+.tool-tabs {
+  display: grid;
+  /* Four equal columns at desktop width. The labels range from "SVG -> PNG or
+     JPEG" to "PNG, JPEG, WebP, GIF -> PDF"; a single row at minmax(190px)
+     truncated them ("PNG, JPEG, WebP... -> P..."), and minmax(230px) pushed
+     the row onto two lines. 1fr columns fit the longest label, and the media
+     queries below step down to 2 then 1 column on narrow screens. */
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 720px) {
+  .tool-tabs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 420px) {
+  .tool-tabs {
+    grid-template-columns: 1fr;
+  }
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text-muted);
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+}
+
+.tab:hover:not(:disabled) {
+  border-color: var(--border-strong);
+  color: var(--text);
+}
+
+.tab.is-active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+
+.tab-arrow {
+  opacity: 0.6;
+}
+
+.tab-from,
+.tab-to {
+  /* Allow the label to shrink and wrap instead of ellipsising. An earlier
+     rule set `white-space: nowrap` + `text-overflow: ellipsis` here, which
+     truncated "PNG, JPEG, WebP, GIF" to "PNG, JPEG, WebP..." at the 202px
+     column width. A tool label that is cut off is worse than one on two
+     lines: the user can no longer tell what the tool accepts. */
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+
+/* --------------------------------------------------------------- converter */
+.converter {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+}
+
+.converter-header h2 {
+  margin: 0 0 0.4rem;
+  font-size: 1.25rem;
+}
+
+.converter-flow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 0.5rem;
+  flex-wrap: wrap;
+}
+
+.chip {
+  display: inline-block;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.chip-accent {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.arrow {
+  color: var(--text-muted);
+}
+
+.converter-summary {
+  margin: 0 0 1.25rem;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+}
+
+/* --------------------------------------------------------------- dropzone */
+.dropzone {
+  border: 2px dashed var(--border-strong);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  padding: 2rem 1.25rem;
+  text-align: center;
+  transition: border-color 0.12s ease, background 0.12s ease;
+}
+
+.dropzone.is-dragging {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.dropzone.is-disabled {
+  opacity: 0.6;
+}
+
+.dropzone-title {
+  margin: 0 0 0.25rem;
+  font-weight: 600;
+}
+
+.dropzone-sub {
+  margin: 0 0 1rem;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+/* ------------------------------------------------------------- file list */
+.file-list {
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.file-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  font-size: 0.88rem;
+}
+
+.file-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--mono);
+  font-size: 0.82rem;
+}
+
+.file-size {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+.file-actions {
+  display: flex;
+  gap: 0.2rem;
+}
+
+/* --------------------------------------------------------------- options */
+.options {
+  margin: 1.25rem 0 0;
+  padding: 0;
+  border: 0;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.options:disabled {
+  opacity: 0.6;
+}
+
+.option {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.option-checkbox {
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 0.55rem;
+}
+
+.option-checkbox input {
+  margin-top: 0.3rem;
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
+
+.option label {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.option-help {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+input[type='number'],
+input[type='text'],
+select {
+  padding: 0.5rem 0.6rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.9rem;
+  width: 100%;
+}
+
+input[type='checkbox'] {
+  accent-color: var(--accent);
+}
+
+:where(input, select, button, summary, a):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* --------------------------------------------------------------- buttons */
+.button {
+  padding: 0.55rem 1rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.button-primary {
+  background: var(--accent);
+  color: #fff;
+}
+
+.button-primary:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+
+.button-large {
+  padding: 0.7rem 1.5rem;
+  font-size: 0.98rem;
+}
+
+.button-ghost {
+  background: transparent;
+  border-color: var(--border-strong);
+  color: var(--text-muted);
+}
+
+.button-ghost:hover:not(:disabled) {
+  color: var(--text);
+  border-color: var(--text-muted);
+}
+
+.button-icon {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.8rem;
+  line-height: 1;
+}
+
+.actions {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+
+/* ---------------------------------------------------------------- alerts */
+.status-area {
+  margin-top: 1rem;
+  min-height: 1.5rem;
+}
+
+.alert {
+  margin: 0 0 0.6rem;
+  padding: 0.7rem 0.9rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid;
+  font-size: 0.88rem;
+}
+
+.alert-info {
+  background: var(--info-bg);
+  border-color: var(--info-border);
+  color: var(--info-text);
+}
+
+.alert-success {
+  background: var(--ok-bg);
+  border-color: var(--ok-border);
+  color: var(--ok-text);
+}
+
+.alert-error {
+  background: var(--err-bg);
+  border-color: var(--err-border);
+  color: var(--err-text);
+}
+
+.alert-warn {
+  background: var(--warn-bg);
+  border-color: var(--warn-border);
+  color: var(--warn-text);
+}
+
+/* ----------------------------------------------------------------- notes */
+.notes {
+  margin-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  padding-top: 1rem;
+}
+
+.notes summary {
+  cursor: pointer;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.notes summary:hover {
+  color: var(--text);
+}
+
+.notes ul {
+  margin: 0.75rem 0 0;
+  padding-left: 1.2rem;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.notes li {
+  margin-bottom: 0.4rem;
+}
+
+/* ---------------------------------------------------------------- footer */
+.site-footer {
+  margin: 3rem 0 0;
+  padding: 1.5rem 0 2.5rem;
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.site-footer p {
+  margin: 0;
+}
+
+/* ------------------------------------------------------------- responsive */
+@media (max-width: 560px) {
+  .converter {
+    padding: 1.1rem;
+  }
+
+  .site-header .wrap {
+    align-items: flex-start;
+  }
+
+  .actions .button-large {
+    width: 100%;
+  }
+}
+
+/* Honour a stated preference for less motion. */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+@media print {
+  .site-header,
+  .tool-tabs,
+  .actions,
+  .site-footer {
+    display: none;
+  }
+}
