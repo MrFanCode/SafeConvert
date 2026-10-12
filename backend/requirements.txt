@@ -1,0 +1,60 @@
+# SafeConvert — pinned production dependencies.
+#
+# GENERATED from the resolved dependency graph, not hand-written. Regenerate:
+#
+#     cd backend && /home/agent/workspace/.venv/bin/python3 tools/gen_requirements.py
+#
+# Two rules this file exists to enforce:
+#
+#  1. Exact pins. Every build installs byte-identical versions, so the image
+#     you test is the image you ship. A `>=` range makes those two different
+#     things at different times.
+#
+#  2. No surprises from compiled wheels. pypdfium2 and resvg-py ship native
+#     wheels. A version bump that quietly drops your platform tag turns a
+#     five-second install into a toolchain build — or a broken runtime. The
+#     Dockerfile asserts both landed as wheels rather than source builds.
+#
+# Note: uvicorn is pinned WITHOUT the [standard] extras. httptools/uvloop are
+# compiled, and the pure-Python h11 implementation is entirely adequate at this
+# service's throughput. Fewer native dependencies is a smaller attack surface,
+# which is the whole point of this project.
+#
+# Every version below was verified installed in the environment that generated
+# this file (Python 3.14 on linux/amd64).
+
+
+# --- web framework -----------------------------------------------------
+annotated-doc==0.0.5
+annotated-types==0.8.0
+anyio==4.15.1
+charset-normalizer==3.5.1
+click==8.5.0
+fastapi==0.142.2
+h11==0.16.0
+idna==3.20
+opentelemetry-api==1.45.0
+pydantic==2.13.5
+pydantic-core==2.46.5
+pydantic-settings==2.15.0
+python-dotenv==1.2.4
+python-multipart==0.0.32
+starlette==1.7.0
+typing-extensions==4.16.0
+typing-inspection==0.4.4
+uvicorn==0.54.0
+
+# --- PDF rendering (BSD-3/Apache-2 — deliberately NOT PyMuPDF/AGPL) ----
+pillow==12.3.0
+pypdfium2==5.14.0
+reportlab==5.0.1
+
+# --- DOCX --------------------------------------------------------------
+lxml==6.1.3
+python-docx==1.2.0
+
+# --- SVG rasterisation (Rust resvg — performs no external fetches) -----
+resvg-py==0.5.0
+
+# --- XML hardening -----------------------------------------------------
+defusedxml==0.7.1
